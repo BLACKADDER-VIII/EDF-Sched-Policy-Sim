@@ -16,35 +16,35 @@ class Fp_edf_sched:
             return
         priority_q = []
         for t in self.task_list:
-            t.release(0)
-            priority_q.append(t)
+            priority_q.append(t.release(0))
         preemtions = 0
         priority_q.sort()
-        curr_task = None
+        curr_job = None
 
         # Add something to graph the execution for small task set cases
 
         for it in range(iter):
-            if curr_task: 
-                if curr_task.exec_remain == 0:
-                    curr_task = None
-                else:
-                    curr_task.exec_remain -= 1
+            print(priority_q)
+            if curr_job: 
+                curr_job.exec_remain -= 1
+                if curr_job.exec_remain <= 0:
+                    curr_job = None
+                    
             # Check task set for new releases
             for t in self.task_list:
-                if t.next_release == iter:
-                    t.release(iter)
-                    priority_q.append(t)
+                if t.next_release == it:
+                    print(f"Adding job from task: {t.period}")
+                    priority_q.append(t.release(it))
+
             priority_q.sort()
-            if curr_task == None and len(priority_q):
-                curr_task = priority_q.pop(0)
-                continue
-            if len(priority_q) and priority_q[0] < curr_task:
+            if curr_job == None and len(priority_q):
+                curr_job = priority_q.pop(0)
+            elif len(priority_q) and priority_q[0] < curr_job:
                 # Preempt
                 preemtions+=1
-                priority_q.append(curr_task)
-                curr_task = priority_q.pop(0)
+                priority_q.append(curr_job)
+                curr_job = priority_q.pop(0)
                 priority_q.sort()
-            print(f"Iter: {it} Task: {'None' if not curr_task else curr_task.period}")
+            print(f"Iter: {it} Task: {'None' if not curr_job else curr_job.deadline}")
         
-        return preemtions
+        print(f"Number of preemptions: {preemtions}")
