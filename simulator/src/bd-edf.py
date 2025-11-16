@@ -1,2 +1,0 @@
-# Backlogged-density EDF scheduler
-

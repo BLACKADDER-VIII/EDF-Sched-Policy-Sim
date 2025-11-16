@@ -1,5 +1,5 @@
 class Np_edf_sched:
-    def __init_(self, task_list):
+    def __init__(self, task_list):
         self.task_list = task_list
     
     def check_schedulability(self):

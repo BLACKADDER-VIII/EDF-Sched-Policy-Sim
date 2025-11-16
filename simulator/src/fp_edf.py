@@ -24,7 +24,6 @@ class Fp_edf_sched:
         # Add something to graph the execution for small task set cases
 
         for it in range(iter):
-            print(priority_q)
             if curr_job: 
                 curr_job.exec_remain -= 1
                 if curr_job.exec_remain <= 0:
